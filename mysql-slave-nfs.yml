@@ -8,8 +8,8 @@ data:
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
-    STOP SLVAE;
-    CHANGE MASTER TO master_host=localhost, master_user='usera', master_password='usera', master_auto_position=1;
+    STOP SLAVE;
+    CHANGE MASTER TO master_host=192.168.8.59, master_user='usera', master_password='usera', master_auto_position=1;
     CHANGE REPLICATION FILTER REPLICATION_IGNORE_DB=(mysql_innodb_cluster_metadata);
     FLUSH PRIVILEGES;
     START SLAVE;
