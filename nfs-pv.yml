@@ -8,6 +8,6 @@ spec:
   accessModes:
   - ReadWriteOnce
   nfs:
-    path: /opt/nfs
-    server: 192.168.190.144
+    path: /opt/mysql-slave
+    server: 192.168.8.62
   persistentVolumeReclaimPolicy: Recycle
