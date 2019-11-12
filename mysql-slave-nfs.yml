@@ -9,7 +9,7 @@ data:
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
     STOP SLAVE;
-    CHANGE MASTER TO master_host='192.168.8.61', master_user='usera', master_password='usera', master_auto_position=0;
+    CHANGE MASTER TO master_host='192.168.8.61',master_port='32000', master_user='usera', master_password='usera', master_auto_position=0;
     CHANGE REPLICATION FILTER REPLICATE_IGNORE_DB=(mysql_innodb_cluster_metadata);
     FLUSH PRIVILEGES;
     START SLAVE;
@@ -109,6 +109,6 @@ spec:
   - port: 3306
     targetPort: 3306
     protocol: TCP
-    nodePort: 3306
+    nodePort: 32000
   selector:
     app: mysql-slave
