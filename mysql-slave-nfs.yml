@@ -9,7 +9,7 @@ data:
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
     STOP SLAVE;
-    CHANGE MASTER TO master_host=192.168.8.59, master_user='usera', master_password='usera', master_auto_position=1;
+    CHANGE MASTER TO master_host=192.168.8.61, master_user='usera', master_password='usera', master_auto_position=1;
     CHANGE REPLICATION FILTER REPLICATION_IGNORE_DB=(mysql_innodb_cluster_metadata);
     FLUSH PRIVILEGES;
     START SLAVE;
