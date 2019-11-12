@@ -1,18 +1,24 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysqlinit
+  name: slave-mysqlinitcmap
   namespace: default
 data:
-  initdb.sql: |
+  initdb.sql: |-
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
+    STOP SLVAE;
+    CHANGE MASTER TO master_host=localhost, master_user='usera', master_password='usera', master_auto_position=1;
+    CHANGE REPLICATION FILTER REPLICATION_IGNORE_DB=(mysql_innodb_cluster_metadata);
+    FLUSH PRIVILEGES;
+    START SLAVE;
+
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: myconfmap
+  name: slave-replcmap
   namespace: default
 data:
   my.conf: |
@@ -33,34 +39,34 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-slave
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: mysql-slave
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql-slave
     spec:
       volumes:
-        - name: mysql-persistent-storage
+        - name: slave-mysql-persistent-storage
           persistentVolumeClaim:
             claimName: nfs-claim1
-        - name: myconf
+        - name: slave-replcmap-vol
           configMap:
-            name: myconfmap
-        - name: mysqlinitconf
+            name: slave-replcmap
+        - name: slave-mysqlinitconf-vol
           configMap:
-            name: mysqlinit
+            name: slave-mysqlinitcmap
       containers:
       - image: mysql:5.7
-        name: mysql
+        name: mysql-slave
         env:
         - name: MYSQL_SERVER_CONTAINER
-          value: mysql
+          value: mysql-slave
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
               secretKeyRef:
@@ -85,18 +91,18 @@ spec:
         - containerPort: 3306
           name: mysql
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: slave-mysql-persistent-storage
           mountPath: /var/lib/mysql
-        - name: mysqlinitconf
+        - name: slave-mysqlinitconf-vol
           mountPath: /docker-entrypoint-initdb.d
-        - name: myconf
+        - name: slave-replcmap-vol
           mountPath: /etc/mysql/my.cnf
           subPath: my.conf
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-slave
 spec:
   type: NodePort
   ports:
@@ -104,4 +110,4 @@ spec:
     targetPort: 3306
     protocol: TCP
   selector:
-    app: mysql
+    app: mysql-slave
