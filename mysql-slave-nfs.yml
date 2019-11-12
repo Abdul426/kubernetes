@@ -5,6 +5,7 @@ metadata:
   namespace: default
 data:
   initdb.sql: |-
+    DROP USER IF EXISTS 'testuser'@'%';
     STOP SLAVE;
     CHANGE MASTER TO master_host='192.168.8.61',master_port=32000, master_user='usera', master_password='usera', master_auto_position=0;
     CHANGE REPLICATION FILTER REPLICATE_IGNORE_DB=(mysql_innodb_cluster_metadata);
