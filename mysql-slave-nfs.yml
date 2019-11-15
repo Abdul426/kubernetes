@@ -52,7 +52,7 @@ spec:
       volumes:
         - name: slave-mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: nfs-claim1
+            claimName: slave-nfs-claim1
         - name: slave-replcmap-vol
           configMap:
             name: slave-replcmap
@@ -87,7 +87,7 @@ spec:
                 key: MYSQL_PASSWORD
         ports:
         - containerPort: 3306
-          name: mysql
+          name: mysql-slave
         volumeMounts:
         - name: slave-mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -100,14 +100,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
- name: mysql
+ name: mysql-slave
 spec:
  type: NodePort
  ports:
- - name: mysql
+ - name: mysql-slave
    port: 3306
    targetPort: 3306
    protocol: TCP
    nodePort: 32000
  selector:
-   app: mysql
+   app: mysql-slave
