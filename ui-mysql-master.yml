@@ -12,7 +12,7 @@ spec:
         - containerPort: 8080
       env:
       - name: spring_jpa_database
-        value: mysql-master
+        value: mysql
       - name: spring_datasource_url
         value: jdbc:mysql://mysql-master:3306/test?useSSL=false
       - name: spring_datasource_username
