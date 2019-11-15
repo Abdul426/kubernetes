@@ -110,4 +110,3 @@ spec:
    nodePort: 32000
  selector:
    app: mysql
- loadBalancerIP: 172.29.0.1
