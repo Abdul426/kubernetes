@@ -36,22 +36,22 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-master
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: mysql-master
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql-master
     spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: nfs-claim1
+            claimName: master-nfs-claim1
         - name: mstr-replcmap-vol
           configMap:
             name: mstr-replcmap
@@ -60,10 +60,10 @@ spec:
             name: mstr-mysqlinitcmap
       containers:
       - image: mysql:5.7
-        name: mysql
+        name: mysql-master
         env:
         - name: MYSQL_SERVER_CONTAINER
-          value: mysql
+          value: mysql-master
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
               secretKeyRef:
@@ -86,7 +86,7 @@ spec:
                 key: MYSQL_PASSWORD
         ports:
         - containerPort: 3306
-          name: mysql
+          name: mysql-master
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -99,14 +99,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
- name: mysql
+ name: mysql-master
 spec:
  type: NodePort
  ports:
- - name: mysql
+ - name: mysql-master
    port: 3306
    targetPort: 3306
    protocol: TCP
    nodePort: 32000
  selector:
-   app: mysql
+   app: mysql-master
