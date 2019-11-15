@@ -63,7 +63,7 @@ spec:
         name: mysql-master
         env:
         - name: MYSQL_SERVER_CONTAINER
-          value: mysql-master
+          value: mysql
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
               secretKeyRef:
