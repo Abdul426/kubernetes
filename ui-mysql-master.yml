@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: spring-mysql
+  name: spring-mysql-master
   labels:
-    app: spring-mysql
+    app: spring-mysql-master
 spec:
     containers:
-    - name: spring-mysql
+    - name: spring-mysql-master
       image: index.docker.io/neethirocks/spring-mysql:1.0
       ports:
         - containerPort: 8080
       env:
       - name: spring_jpa_database
-        value: mysql
+        value: mysql-master
       - name: spring_datasource_url
-        value: jdbc:mysql://mysql:3306/test?useSSL=false
+        value: jdbc:mysql://mysql-master:3306/test?useSSL=false
       - name: spring_datasource_username
         valueFrom:
           secretKeyRef:
@@ -30,9 +30,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-mysql-service
+  name: spring-mysql-service-master
   labels:
-    name: spring-mysql-service
+    name: spring-mysql-service-master
 spec:
   ports:
     - port: 80
@@ -40,5 +40,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: spring-mysql
+    app: spring-mysql-master
   type: NodePort
