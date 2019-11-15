@@ -40,7 +40,7 @@ spec:
       protocol: TCP
       name: http
       protocol: TCP
-      nodePort: 32001      
+      nodePort: 33000      
   selector:
     app: spring-mysql-master
   type: NodePort
