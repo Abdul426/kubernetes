@@ -6,7 +6,7 @@ metadata:
     app: spring-mysql-master
 spec:
     containers:
-    - name: spring-mysql-master
+    - name: spring-mysql-ui-master
       image: index.docker.io/neethirocks/spring-mysql:1.0
       ports:
         - containerPort: 8080
