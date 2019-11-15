@@ -39,6 +39,8 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
+      protocol: TCP
+      nodePort: 32001      
   selector:
     app: spring-mysql-master
   type: NodePort
