@@ -27,7 +27,7 @@ spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: master-nfs-claim1
+            claimName: ro-mstr-nfs-datadir-claim
       containers:
       - image: mysql:5.7
         name: mysql-master
