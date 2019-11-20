@@ -17,7 +17,7 @@ kind: ConfigMap
 metadata:
   name: ro-mstr-replcnfgmap
 data:
-  replcn-master.conf: |
+  replcn-master.cnf: |
     [mysqld]
     log-bin=mysql-bin
     server-id=1
