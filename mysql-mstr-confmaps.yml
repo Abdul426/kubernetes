@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mstr-mysqlinitcmap
+  name: ro-mstr-mysqlinitcnfgmap
 data:
   initdb.sql: |-
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
@@ -15,7 +15,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mstr-replcmap
+  name: ro-mstr-replcnfgmap
 data:
   my.conf: |
     [mysqld]
