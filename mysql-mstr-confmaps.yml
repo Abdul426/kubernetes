@@ -5,7 +5,7 @@ metadata:
 data:
   initdb.sh: |-
     sleep 5
-    mysql -uroot -ppassword
+    mysql -h 127.0.0.0 -P 3306 -uroot -ppassword
     use test;
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
