@@ -18,4 +18,4 @@ metadata:
 data:
   replcn-slave.cnf: |
     [mysqld]
-    server-id=2
+    server-id=2 
