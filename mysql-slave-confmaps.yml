@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ro-slave-mysqlinitcmap
+data:
+  initdb.sql: |-
+    DROP USER IF EXISTS 'testuser'@'%';
+    STOP SLAVE;
+    CHANGE MASTER TO master_host='192.168.130.11',master_port=32000, master_user='usera', master_password='usera', master_auto_position=0;
+    CHANGE REPLICATION FILTER REPLICATE_IGNORE_DB=(mysql_innodb_cluster_metadata);
+    FLUSH PRIVILEGES;
+    START SLAVE;
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ro-slave-replcmap
+data:
+  replcn-slave.cnf: |
+    [mysqld]
+    server-id=2
