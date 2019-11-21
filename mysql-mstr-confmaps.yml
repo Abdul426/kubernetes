@@ -4,6 +4,7 @@ metadata:
   name: ro-mstr-mysqlinitcnfgmap
 data:
   initdb.sh: |-
+    sleep 5
     mysql -uroot -ppassword
     use test;
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
