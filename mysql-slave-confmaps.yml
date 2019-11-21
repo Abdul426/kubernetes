@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ro-slave-mysqlinitcmap
+  name: ro-mstr-mysqlinitcnfgmap
 data:
   initdb.sql: |-
     DROP USER IF EXISTS 'testuser'@'%';
@@ -14,7 +14,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ro-slave-replcmap
+  name: ro-mstr-replcnfgmap
 data:
   replcn-slave.cnf: |
     [mysqld]
