@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: ro-mstr-mysqlinitcnfgmap
 data:
-  initdb.sql: |-
+  initdb.sh: |-
+    mysql -uroot -ppassword
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
