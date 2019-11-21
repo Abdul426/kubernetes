@@ -7,20 +7,6 @@ data:
     CREATE TABLE aadhaar ( name varchar(255) NOT NULL,
     sex char NOT NULL, birth DATE  NOT NULL, death DATE  NULL,
     id int(255) NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) );
-    CREATE USER 'usera'@'%' IDENTIFIED BY 'usera';
-    GRANT REPLICATION SLAVE ON *.* TO 'usera' IDENTIFIED BY 'usera';
-    FLUSH PRIVILEGES;
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mstr-replcmap
-data:
-  my.conf: |
-    [mysqld]
-    log-bin=mysql-bin
-    server-id=1
 ---
 apiVersion: v1
 kind: Secret
@@ -38,6 +24,7 @@ kind: Deployment
 metadata:
   name: mysql-master
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: mysql-master
@@ -49,15 +36,15 @@ spec:
         app: mysql-master
     spec:
       volumes:
-        - name: mysql-persistent-storage
+        - name: ro-mstr-nfs-datadir-vol
           persistentVolumeClaim:
-            claimName: master-nfs-claim1
-        - name: mstr-replcmap-vol
-          configMap:
-            name: mstr-replcmap
+            claimName: ro-mstr-nfs-datadir-claim
         - name: mysqlinitconf-vol
           configMap:
             name: mstr-mysqlinitcmap
+        - name: ro-mstr-nfs-configdir-vol
+          persistentVolumeClaim:
+            claimName: ro-mstr-nfs-configdir-claim
       containers:
       - image: mysql:5.7
         name: mysql-master
@@ -88,13 +75,12 @@ spec:
         - containerPort: 3306
           name: mysql-master
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: ro-mstr-nfs-datadir-vol
           mountPath: /var/lib/mysql
+        - name: ro-mstr-nfs-configdir-vol
+          mountPath: /etc/mysql
         - name: mysqlinitconf-vol
           mountPath: /docker-entrypoint-initdb.d
-        - name: mstr-replcmap-vol
-          mountPath: /etc/mysql/my.cnf
-          subPath: my.conf
 ---
 apiVersion: v1
 kind: Service
